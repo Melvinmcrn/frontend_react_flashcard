@@ -3,13 +3,13 @@ import CardDeck from "./CardDeck";
 import "./Flashcard.css";
 import "./button.css";
 
-// var data = require("./data.json")
+var data = require("./data.json")
 
 class Deck extends React.Component {
   render() {
     return (
       <div className="Deck" id={"Deck_" + this.props.value}>
-        {this.props.value}
+        {data[this.props.value].deckID}
       </div>
     );
   }
