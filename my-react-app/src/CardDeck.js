@@ -3,22 +3,39 @@ import './Flashcard.css';
 import './button.css';
 var data = require('./data.json');
 
-class Card extends React.Component {
+// class Card extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            wordID: this.props.wordID,
-        }
-    }
+//     constructor(props) {
+//         super(props);
+//         this.state = {
+//             wordID: this.props.wordID,
+//         }
+//         this.deckID = this.props.deckID;
+//         // this.wordList = data['wordList'];
+//         // this.cur
 
-    render() {
-        return (
-            <div className="Card">
-                {this.state.wordID}
-            </div>
-        );
-    }
+//     }
+
+//     render() {
+//         return (
+//             <div className="Card">
+//                 {this.wordID}
+//             </div>
+//         );
+//     }
+// }
+
+function Card(props) {
+
+    return (props.word === "" ?
+        <div></div>
+        :
+        <div
+            className={props.status}
+        >
+            {props.word}
+        </div>
+    );
 }
 
 class CardDeck extends React.Component {
@@ -26,20 +43,34 @@ class CardDeck extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            deck: null,
+            deckID: null,
+            wordID: 0,
+            status: "Card",
         }
     }
 
-    setDeck(deck) {
+    setDeck(deckID) {
         this.setState({
-            deck: deck,
+            deckID: deckID,
         });
     }
 
+    getWordList() {
+        for (let i = 0; i < data.length; i++) {
+            if (data[i]['deckID'] === this.state.deckID) {
+                console.log("Found deckID: " + this.state.deckID)
+                return data[i]['wordList'];
+            }
+            // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        }
+        return [""];
+    }
+
     renderCard(wordID) {
-        return  (
+        return (
             <Card
-                wordID={wordID}
+                word={this.getWordList()[this.state.wordID]}
+                status={this.state.status}
             />
         )
     }
@@ -48,7 +79,7 @@ class CardDeck extends React.Component {
         // console.log(data);
         return (
             <div className='Card-Deck'>
-                {this.renderCard('word01')}
+                {this.renderCard(0)}
             </div>
         );
     }
