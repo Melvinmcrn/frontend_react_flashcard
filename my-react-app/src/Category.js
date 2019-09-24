@@ -1,6 +1,8 @@
 import React from 'react';
-// import logo from './logo.svg';
+import CardDeck  from './CardDeck';
 import './Flashcard.css';
+import './button.css';
+
 
 class Deck extends React.Component {
   render() {
@@ -19,7 +21,7 @@ class Category extends React.Component {
 
   getDeck(i) {
     return (
-      <Deck 
+      <Deck
         value={i}
       />
     )
@@ -40,23 +42,10 @@ class Category extends React.Component {
 
 function App() {
   return (
-    <Category />
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
+    <div>
+      <Category />
+      <CardDeck />
+    </div>
   );
 }
 
