@@ -43,9 +43,10 @@ class CardDeck extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            deckID: null,
+            deckID: "Animal",//null,
             wordID: 0,
             status: "Card",
+            currentWord: 0,
         }
     }
 
@@ -58,18 +59,18 @@ class CardDeck extends React.Component {
     getWordList() {
         for (let i = 0; i < data.length; i++) {
             if (data[i]['deckID'] === this.state.deckID) {
-                console.log("Found deckID: " + this.state.deckID)
+                console.log("Found deckID: " + this.state.deckID);
                 return data[i]['wordList'];
             }
-            // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
         }
+        console.log("No deck found!");
         return [""];
     }
 
     renderCard(wordID) {
         return (
             <Card
-                word={this.getWordList()[this.state.wordID]}
+                word={this.getWordList()[this.state.wordID][this.state.currentWord]}
                 status={this.state.status}
             />
         )
