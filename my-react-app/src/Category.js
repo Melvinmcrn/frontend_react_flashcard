@@ -9,7 +9,7 @@ class Deck extends React.Component {
   render() {
     return (
       <div className="Deck" id={"Deck_" + this.props.value}>
-        {data.wordList[this.props.value].wordID}
+        {data[this.props.value].deckID}
       </div>
     );
   }
