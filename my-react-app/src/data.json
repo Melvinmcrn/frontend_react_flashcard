@@ -1,0 +1,29 @@
+{
+    "deckID": "deck01",
+    "wordList": [
+        {
+            "wordID": "word01",
+            "words": [
+                "Dog",
+                "หมา",
+                "狗"
+            ]
+        },
+        {
+            "wordID": "word02",
+            "words": [
+                "Cat",
+                "แมว",
+                "猫"
+            ]
+        },
+        {
+            "wordID": "word03",
+            "words": [
+                "Ant",
+                "มด",
+                "蚂蚁"
+            ]
+        }
+    ]
+}
