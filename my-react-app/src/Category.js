@@ -3,11 +3,13 @@ import CardDeck from "./CardDeck";
 import "./Flashcard.css";
 import "./button.css";
 
+var data = require("./data.json")
+
 class Deck extends React.Component {
   render() {
     return (
       <div className="Deck" id={"Deck_" + this.props.value}>
-        {"Deck " + this.props.value}
+        {data.wordList[this.props.value].wordID}
       </div>
     );
   }
@@ -25,9 +27,9 @@ class Category extends React.Component {
   render() {
     return (
       <div className="Category">
+        {this.renderDeck(0)}
         {this.renderDeck(1)}
         {this.renderDeck(2)}
-        {this.renderDeck(3)}
       </div>
     );
   }
