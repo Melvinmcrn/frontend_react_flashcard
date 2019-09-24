@@ -40,13 +40,4 @@ class Category extends React.Component {
   }
 }
 
-function App() {
-  return (
-    <div>
-      <Category />
-      <CardDeck />
-    </div>
-  );
-}
-
-export default App;
+export default Category;
