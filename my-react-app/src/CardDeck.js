@@ -3,7 +3,21 @@ import './Flashcard.css';
 import './button.css';
 
 class CardDeck extends React.Component {
-    render () {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            deck: null,
+        }
+    }
+
+    setDeck(deck) {
+        this.setState({
+            deck: deck,
+        });
+    }
+
+    render() {
         return (
             <div className='Card'>
                 {'FUCK'}

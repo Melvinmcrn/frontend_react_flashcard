@@ -1,5 +1,5 @@
 import React from 'react';
-import CardDeck  from './CardDeck';
+import CardDeck from './CardDeck';
 import './Flashcard.css';
 import './button.css';
 
@@ -19,7 +19,7 @@ class Deck extends React.Component {
 
 class Category extends React.Component {
 
-  getDeck(i) {
+  renderDeck(i) {
     return (
       <Deck
         value={i}
@@ -27,14 +27,18 @@ class Category extends React.Component {
     )
   }
 
+  setDeck(deck){
+    CardDeck.setDeck(deck);
+  }
+
   render() {
     return (
       <div
         className="Category"
       >
-        {this.getDeck(1)}
-        {this.getDeck(2)}
-        {this.getDeck(3)}
+        {this.renderDeck(1)}
+        {this.renderDeck(2)}
+        {this.renderDeck(3)}
       </div>
     );
   }
