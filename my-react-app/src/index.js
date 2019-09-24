@@ -15,6 +15,8 @@ function main() {
 }
 
 ReactDOM.render(main(), document.getElementById('root'));
+// ReactDOM.render(<Category />, document.getElementById('root'));
+// ReactDOM.render(<CardDeck />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

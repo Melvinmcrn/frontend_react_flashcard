@@ -1,6 +1,25 @@
 import React from 'react';
 import './Flashcard.css';
 import './button.css';
+var data = require('./data.json');
+
+class Card extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            wordID: this.props.wordID,
+        }
+    }
+
+    render() {
+        return (
+            <div className="Card">
+                {this.state.wordID}
+            </div>
+        );
+    }
+}
 
 class CardDeck extends React.Component {
 
@@ -17,10 +36,19 @@ class CardDeck extends React.Component {
         });
     }
 
+    renderCard(wordID) {
+        return  (
+            <Card
+                wordID={wordID}
+            />
+        )
+    }
+
     render() {
+        // console.log(data);
         return (
-            <div className='Card'>
-                {'FUCK'}
+            <div className='Card-Deck'>
+                {this.renderCard('word01')}
             </div>
         );
     }
