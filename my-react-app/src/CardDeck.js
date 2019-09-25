@@ -3,59 +3,62 @@ import "./Flashcard.css";
 import "./button.css";
 var data = require("./data.json");
 
-function Card(props) {
-  return props.word === "" ? (
-    <div></div>
-  ) : (
-    <div className={props.status}>{props.word}</div>
-  );
+class Card extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            current: 0,
+        };
+    }
+
+    render() {
+        return this.props.wordList.length === 0 ? (
+            <div></div>
+        ) : (
+                <div
+                    className={this.props.status}
+                >
+                    {this.props.wordList[this.state.current]}
+                </div>
+            );
+    }
 }
 
 class CardDeck extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      deckID: "Animal", //null,
-      wordID: 0,
-      status: "Card",
-      currentWord: 0
-    };
-  }
-
-  setDeck(deckID) {
-    this.setState({
-      deckID: deckID
-    });
-  }
-
-  getWordList() {
-    for (let i = 0; i < data.length; i++) {
-      if (data[i]["deckID"] === this.state.deckID) {
-        console.log("Found deckID: " + this.state.deckID);
-        return data[i]["wordList"];
-      }
+    constructor(props) {
+        super(props);
+        this.state = {
+            deckID: "Animal" //null,
+        };
     }
-    console.log("No deck found!");
-    return [""];
-  }
 
-  renderCard(wordID) {
-    return (
-      <Card
-        word={this.getWordList()[this.state.wordID][this.state.currentWord]}
-        status={this.state.status}
-      />
-    );
-  }
+    setDeck(deckID) {
+        this.setState({
+            deckID: deckID
+        });
+    }
 
-  render() {
-    return (
-      <div>
-        <div className="Card-Deck">{this.renderCard(0)} </div>
-        <button onclick="myFunction()">Click me</button>
-      </div>
-    );
-  }
+    getWordList(wordID) {
+        return data[this.state.deckID][wordID];
+    }
+
+    renderCard(wordID) {
+        return (
+            <Card
+                wordList={this.getWordList(wordID)}
+                status={"Card"}
+            />
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                <div className="Card-Deck">{this.renderCard(0)} </div>
+                {/* <button onClick="myFunction()">Click me</button> */}
+            </div>
+        );
+    }
 }
 
 export default CardDeck;
