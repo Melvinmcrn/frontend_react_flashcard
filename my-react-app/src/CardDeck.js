@@ -25,29 +25,21 @@ class Card extends React.Component {
 }
 
 class CardDeck extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            deckID: "Animal" //null,
-        };
-    }
-
-    setDeck(deckID) {
-        this.setState({
-            deckID: deckID
-        });
-    }
 
     getWordList(wordID) {
-        return data[this.state.deckID][wordID];
+        return this.props.deckID === null ?
+            null :
+            data[this.props.deckID][wordID];
     }
 
     renderCard(wordID) {
         return (
-            <Card
-                wordList={this.getWordList(wordID)}
-                status={"Card"}
-            />
+            this.getWordList(wordID) === null ?
+                null :
+                <Card
+                    wordList={this.getWordList(wordID)}
+                    status={"Card"}
+                />
         );
     }
 
