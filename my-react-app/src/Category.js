@@ -28,7 +28,7 @@ class Category extends React.Component {
   }
 
   renderDeck(i) {
-    return <Deck deckID={i} onClick={() => this.sendData(i)} />;
+    return <Deck deckID={i} key={i} onClick={() => this.sendData(i)} />;
   }
 
   sendData = i => {
