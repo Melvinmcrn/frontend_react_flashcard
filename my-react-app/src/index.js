@@ -5,16 +5,25 @@ import Category from './Category';
 import CardDeck from './CardDeck';
 import * as serviceWorker from './serviceWorker';
 
-function main() {
-    return (
-        <div className='MainPage'>
-            <Category />
-            <CardDeck />
-        </div>
-    );
+class MainPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            deckID: null,
+        };
+    }
+
+    render() {
+        return (
+            <div className={'MainPage'} >
+                <Category deckID={this.state.deckID} />
+                <CardDeck deckID={this.state.deckID} />
+            </div>
+        )
+    };
 }
 
-ReactDOM.render(main(), document.getElementById('root'));
+ReactDOM.render(<MainPage />, document.getElementById('root'));
 // ReactDOM.render(<Category />, document.getElementById('root'));
 // ReactDOM.render(<CardDeck />, document.getElementById('root'));
 
