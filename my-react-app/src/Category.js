@@ -1,35 +1,44 @@
 import React from "react";
-import CardDeck from "./CardDeck";
 import "./Flashcard.css";
 import "./button.css";
 
-var data = require("./data.json");
+// var data = require("./data.json");
 
 class Deck extends React.Component {
   render() {
     return (
-      <div className="Deck" id={"Deck_" + this.props.catName}>
-        {this.props.catName}
+      <div
+        className="Deck"
+        id={"Deck_" + this.props.deckID}
+        onClick={this.props.onClick}
+      >
+        {this.props.deckID}
       </div>
     );
   }
 }
 
 class Category extends React.Component {
-  renderDeck(i) {
-    return <Deck catName={i}  />;
+  constructor(props) {
+    super(props);
+    this.state = {
+      deckID: ""
+
+    };
   }
 
-  setDeck(deck) {
-    CardDeck.setDeck(deck);
+  renderDeck(i) {
+    return <Deck deckID={i} onClick={() => this.sendData(i)} />;
   }
+
+  sendData = i => {
+    this.props.parentCallback(i);
+  };
 
   render() {
     return (
       <div className="Category">
-        {this.renderDeck("Animal")}
-        {this.renderDeck("Fruit")}
-        {this.renderDeck("Color")}
+        {["Animal","Fruit","Color"].map(str => this.renderDeck(str))}
       </div>
     );
   }
