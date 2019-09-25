@@ -36,16 +36,14 @@ body {
   left: 0;
   border-radius: 5%;
   transition: left 0.5s, opacity 0.5s, transform 0.5s;
-  /* transition: all 0.5s; */
   transform: rotateX(0deg);
-  /* transition: all 0.5s; */
 }
 
 .Deck {
   border: #09d3ac;
   height: 100%;
   margin-left: 5px;
-  border: 10px solid transparent;
+  border: 5px solid transparent;
 }
 
 .Deck:hover {
