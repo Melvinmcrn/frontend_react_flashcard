@@ -23,7 +23,8 @@ body {
 
 /* ------------------------------------------------------- card --------------------------------------------------------------- */
 
-.Card, .Deck {
+.Card,
+.Deck {
   background-color: white;
   width: 250px;
   height: 200px;
@@ -37,6 +38,7 @@ body {
   border-radius: 5%;
   transition: left 0.5s, opacity 0.5s, transform 0.5s;
   transform: rotateX(0deg);
+  user-select: none;
 }
 
 .Deck {
