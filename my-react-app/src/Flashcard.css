@@ -56,37 +56,24 @@ body {
   display: none;
 }
 
-/* .Card-left {
-  left: -50%;
-  opacity: 0;
-}
-
-.Card-right {
-  left: +50%;
-  opacity: 0;
-} */
-
 .Card-left-out {
-  left: -50%;
-  opacity: 0;
-  /* transition-duration: 0.1s; */
+  left: -100%;
 }
 
 .Card-right-out {
-  left: +50%;
-  /* opacity: 0; */
+  left: +100%;
 }
 
 .Card-left-in {
-  left: -50%;
-  /* opacity: 0; */
-  /* transition-duration: 0s; */
+  left: -100%;
+  z-index: -1;
+  transition-duration: 0.1s;
 }
 
 .Card-right-in {
-  left: +50%;
-  opacity: 0;
-  /* transition: none; */
+  left: +100%;
+  z-index: -1;
+  transition-duration: 0.1s;
 }
 
 .Card-flip {

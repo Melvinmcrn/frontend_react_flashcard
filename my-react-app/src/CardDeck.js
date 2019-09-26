@@ -69,17 +69,16 @@ class CardDeck extends React.Component {
   }
 
   prevCard() {
-    var tmp = this.state.currentCard - 1;
-    if (tmp >= 0) {
-      this.setState({ currentCard: tmp, currentPage: 0 });
-    } else {
-      this.setState({ currentCard: data[this.props.deckID].length - 1, currentPage: 0 });
-    }
-    // this.setState({ status: "Card Card-right-in", });
+    this.setState({ status: "Card Card-right-out", });
   }
 
   prevCardState() {
 
+    if (this.state.currentCard - 1 >= 0) {
+      this.setState({ currentCard: this.state.currentCard - 1, currentPage: 0 });
+    } else {
+      this.setState({ currentCard: data[this.props.deckID].length - 1, currentPage: 0 });
+    }
   }
 
   changePage() {
@@ -105,7 +104,6 @@ class CardDeck extends React.Component {
   }
 
   callbackFunction = childData => {
-    console.log(childData);
     switch (childData) {
       case "Card Card-flip":
         this.changePageState();
@@ -118,6 +116,15 @@ class CardDeck extends React.Component {
         break;
 
       case "Card Card-right-in":
+        this.setState({ status: "Card", });
+        break;
+
+      case "Card Card-right-out":
+        this.prevCardState();
+        this.setState({ status: "Card Card-left-in", });
+        break;
+
+      case "Card Card-left-in":
         this.setState({ status: "Card", });
         break;
 
