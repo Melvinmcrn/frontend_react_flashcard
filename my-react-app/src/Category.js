@@ -23,12 +23,11 @@ class Category extends React.Component {
     super(props);
     this.state = {
       deckID: ""
-
     };
   }
 
   renderDeck(i) {
-    return <Deck deckID={i} key={i} onClick={() => this.sendData(i)} />;
+    return <Deck deckID={i} onClick={() => this.sendData(i)} />;
   }
 
   sendData = i => {
@@ -38,7 +37,7 @@ class Category extends React.Component {
   render() {
     return (
       <div className="Category">
-        {["Animal","Fruit","Color"].map(str => this.renderDeck(str))}
+        {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))}
       </div>
     );
   }
