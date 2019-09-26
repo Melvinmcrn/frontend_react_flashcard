@@ -4,19 +4,12 @@ import "./button.css";
 var data = require("./data.json");
 
 class Card extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentPage: 0
-    };
-  }
-
   render() {
     return this.props.wordList.length === 0 ? (
       <div></div>
     ) : (
-      <div className={this.props.status}>
-        {this.props.wordList[this.state.currentPage]}
+      <div className="Card" onClick={this.props.onClick}>
+        {this.props.wordList[this.props.currentPage]}
       </div>
     );
   }
@@ -26,10 +19,12 @@ class CardDeck extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentCard: 0
+      currentCard: 0,
+      currentPage: 0
     };
     this.nextCard = this.nextCard.bind(this);
     this.backCard = this.backCard.bind(this);
+    this.nextPage = this.nextPage.bind(this);
   }
 
   getWordList(wordID) {
@@ -38,21 +33,34 @@ class CardDeck extends React.Component {
 
   renderCard(wordID) {
     return this.getWordList(wordID) === null ? null : (
-      <Card wordList={this.getWordList(wordID)} status={"Card"} />
+      <Card
+        wordList={this.getWordList(wordID)}
+        currentPage={this.state.currentPage}
+        onClick={this.nextPage}
+      />
     );
   }
 
   nextCard() {
     var tmp = this.state.currentCard + 1;
     if (tmp < data[this.props.deckID].length) {
-      this.setState({ currentCard: tmp });
+      this.setState({ currentCard: tmp, currentPage: 0 });
     }
   }
 
   backCard() {
     var tmp = this.state.currentCard - 1;
     if (tmp >= 0) {
-      this.setState({ currentCard: tmp });
+      this.setState({ currentCard: tmp, currentPage: 0 });
+    }
+  }
+
+  nextPage() {
+    var tmp = this.state.currentPage + 1;
+    if (tmp < data[this.props.deckID][this.state.currentCard].length) {
+      this.setState({ currentPage: tmp });
+    } else {
+      this.setState({ currentPage: 0 });
     }
   }
 
@@ -62,6 +70,7 @@ class CardDeck extends React.Component {
         <div className="Card-Deck">
           {this.renderCard(this.state.currentCard)}
         </div>
+
         <button onClick={this.backCard}>Back</button>
         <button onClick={this.nextCard}>Next</button>
       </div>
