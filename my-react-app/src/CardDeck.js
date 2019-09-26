@@ -4,11 +4,27 @@ import "./button.css";
 var data = require("./data.json");
 
 class Card extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: this.props.status,
+      onTransition: false,
+    };
+  }
+
+  componentDidUpdate() {
+    if (this.state.status !== this.props.status) {
+      this.setState({
+        status: this.props.status,
+      });
+    }
+  }
+
   render() {
     return this.props.wordList === null ? (
       <div></div>
     ) : (
-        <div className="Card" onClick={this.props.onClick}>
+        <div className={this.props.status} onClick={this.props.onClick}>
           {this.props.wordList[this.props.currentPage]}
         </div>
       );
@@ -19,13 +35,14 @@ class CardDeck extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      status: "Card",
       currentCard: 0,
       currentPage: 0,
       deckID: this.props.deckID,
     };
     this.nextCard = this.nextCard.bind(this);
     this.backCard = this.backCard.bind(this);
-    this.nextPage = this.nextPage.bind(this);
+    this.changePage = this.changePage.bind(this);
   }
 
   getWordList(wordID) {
@@ -35,9 +52,11 @@ class CardDeck extends React.Component {
   renderCard(wordID) {
     return this.getWordList(wordID) === null ? null : (
       <Card
+        status={this.state.status}
         wordList={this.getWordList(wordID)}
         currentPage={this.state.currentPage}
-        onClick={this.nextPage}
+        onClick={this.changePage}
+        onAnimationEnd={() => { this.setState({ status: "Card", }) }}
       />
     );
   }
@@ -56,8 +75,9 @@ class CardDeck extends React.Component {
     }
   }
 
-  nextPage() {
+  changePage() {
     var tmp = this.state.currentPage + 1;
+    // this.setState({ status: "Card Card-flip", });
     if (tmp < data[this.props.deckID][this.state.currentCard].length) {
       this.setState({ currentPage: tmp });
     } else {
@@ -65,7 +85,7 @@ class CardDeck extends React.Component {
     }
   }
 
-  render() {
+  componentDidUpdate() {
     if (this.state.deckID !== this.props.deckID) {
       this.setState({
         currentCard: 0,
@@ -73,6 +93,9 @@ class CardDeck extends React.Component {
         deckID: this.props.deckID,
       });
     }
+  }
+
+  render() {
 
     return (
       <div>
