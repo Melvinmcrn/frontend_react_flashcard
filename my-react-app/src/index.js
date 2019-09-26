@@ -9,10 +9,10 @@ class MainPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      deckID: null
+      deckID: "Animal"
     };
   }
-  
+
   callbackFunction = childData => {
     this.setState({ deckID: childData });
   };
