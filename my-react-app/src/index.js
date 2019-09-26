@@ -12,9 +12,11 @@ class MainPage extends React.Component {
       deckID: null
     };
   }
+  
   callbackFunction = childData => {
     this.setState({ deckID: childData });
   };
+
   render() {
     return (
       <div className={"MainPage"}>

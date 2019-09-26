@@ -5,13 +5,13 @@ var data = require("./data.json");
 
 class Card extends React.Component {
   render() {
-    return this.props.wordList.length === 0 ? (
+    return this.props.wordList === null ? (
       <div></div>
     ) : (
-      <div className="Card" onClick={this.props.onClick}>
-        {this.props.wordList[this.props.currentPage]}
-      </div>
-    );
+        <div className="Card" onClick={this.props.onClick}>
+          {this.props.wordList[this.props.currentPage]}
+        </div>
+      );
   }
 }
 
@@ -20,7 +20,8 @@ class CardDeck extends React.Component {
     super(props);
     this.state = {
       currentCard: 0,
-      currentPage: 0
+      currentPage: 0,
+      deckID: this.props.deckID,
     };
     this.nextCard = this.nextCard.bind(this);
     this.backCard = this.backCard.bind(this);
@@ -65,6 +66,14 @@ class CardDeck extends React.Component {
   }
 
   render() {
+    if (this.state.deckID !== this.props.deckID) {
+      this.setState({
+        currentCard: 0,
+        currentPage: 0,
+        deckID: this.props.deckID,
+      });
+    }
+
     return (
       <div>
         <div className="Card-Deck">
