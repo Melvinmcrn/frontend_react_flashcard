@@ -36,7 +36,7 @@ class CardDeck extends React.Component {
       deckID: this.props.deckID,
     };
     this.nextCard = this.nextCard.bind(this);
-    this.backCard = this.backCard.bind(this);
+    this.prevCard = this.prevCard.bind(this);
     this.changePage = this.changePage.bind(this);
   }
 
@@ -57,27 +57,41 @@ class CardDeck extends React.Component {
   }
 
   nextCard() {
-    var tmp = this.state.currentCard + 1;
-    if (tmp < data[this.props.deckID].length) {
-      this.setState({ currentCard: tmp, currentPage: 0 });
+    this.setState({ status: "Card Card-left-out", });
+  }
+
+  nextCardState() {
+    if (this.state.currentCard + 1 < data[this.props.deckID].length) {
+      this.setState({ currentCard: this.state.currentCard + 1, currentPage: 0 });
+    } else {
+      this.setState({ currentCard: 0, currentPage: 0 });
     }
   }
 
-  backCard() {
+  prevCard() {
     var tmp = this.state.currentCard - 1;
     if (tmp >= 0) {
       this.setState({ currentCard: tmp, currentPage: 0 });
+    } else {
+      this.setState({ currentCard: data[this.props.deckID].length - 1, currentPage: 0 });
     }
+    // this.setState({ status: "Card Card-right-in", });
+  }
+
+  prevCardState() {
+
   }
 
   changePage() {
-    // var tmp = this.state.currentPage + 1;
     this.setState({ status: "Card Card-flip", });
-    // if (tmp < data[this.props.deckID][this.state.currentCard].length) {
-    //   this.setState({ currentPage: tmp });
-    // } else {
-    //   this.setState({ currentPage: 0 });
-    // }
+  }
+
+  changePageState() {
+    if (this.state.currentPage + 1 < data[this.props.deckID][this.state.currentCard].length) {
+      this.setState({ currentPage: this.state.currentPage + 1 });
+    } else {
+      this.setState({ currentPage: 0 });
+    }
   }
 
   componentDidUpdate() {
@@ -91,15 +105,22 @@ class CardDeck extends React.Component {
   }
 
   callbackFunction = childData => {
+    console.log(childData);
     switch (childData) {
       case "Card Card-flip":
+        this.changePageState();
         this.setState({ status: "Card", });
-        if (this.state.currentPage + 1 < data[this.props.deckID][this.state.currentCard].length) {
-          this.setState({ currentPage: this.state.currentPage + 1 });
-        } else {
-          this.setState({ currentPage: 0 });
-        }
         break;
+
+      case "Card Card-left-out":
+        this.nextCardState();
+        this.setState({ status: "Card Card-right-in", });
+        break;
+
+      case "Card Card-right-in":
+        this.setState({ status: "Card", });
+        break;
+
       default:
         this.setState({ status: "Card", });
         break;
@@ -114,8 +135,10 @@ class CardDeck extends React.Component {
           {this.renderCard(this.state.currentCard)}
         </div>
 
-        <button onClick={this.backCard}>Back</button>
-        <button onClick={this.nextCard}>Next</button>
+        <div className={"btnGroup"}>
+          <button className={"btn btn-change"} onClick={this.prevCard}>Back</button>
+          <button className={"btn btn-change"} onClick={this.nextCard}>Next</button>
+        </div>
       </div>
     );
   }

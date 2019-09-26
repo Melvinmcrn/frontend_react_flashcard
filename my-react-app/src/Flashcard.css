@@ -56,7 +56,7 @@ body {
   display: none;
 }
 
-.Card-left {
+/* .Card-left {
   left: -50%;
   opacity: 0;
 }
@@ -64,6 +64,29 @@ body {
 .Card-right {
   left: +50%;
   opacity: 0;
+} */
+
+.Card-left-out {
+  left: -50%;
+  opacity: 0;
+  /* transition-duration: 0.1s; */
+}
+
+.Card-right-out {
+  left: +50%;
+  /* opacity: 0; */
+}
+
+.Card-left-in {
+  left: -50%;
+  /* opacity: 0; */
+  /* transition-duration: 0s; */
+}
+
+.Card-right-in {
+  left: +50%;
+  opacity: 0;
+  /* transition: none; */
 }
 
 .Card-flip {
