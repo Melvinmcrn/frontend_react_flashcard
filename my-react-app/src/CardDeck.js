@@ -4,30 +4,25 @@ import "./button.css";
 var data = require("./data.json");
 
 class Card extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      status: this.props.status,
-      onTransition: false,
-    };
-  }
 
-  componentDidUpdate() {
-    if (this.state.status !== this.props.status) {
-      this.setState({
-        status: this.props.status,
-      });
-    }
-  }
+  sendData = x => {
+    this.props.parentCallback(x);
+  };
 
   render() {
     return this.props.wordList === null ? (
       <div></div>
-    ) : (
-        <div className={this.props.status} onClick={this.props.onClick}>
-          {this.props.wordList[this.props.currentPage]}
-        </div>
-      );
+    ) :
+      this.props.status !== "Card" ?
+        (
+          <div className={this.props.status} onClick={this.props.onClick} onTransitionEnd={() => this.sendData(this.props.status)}>
+            {this.props.wordList[this.props.currentPage]}
+          </div>
+        ) : (
+          <div className={this.props.status} onClick={this.props.onClick}>
+            {this.props.wordList[this.props.currentPage]}
+          </div>
+        );
   }
 }
 
@@ -56,7 +51,7 @@ class CardDeck extends React.Component {
         wordList={this.getWordList(wordID)}
         currentPage={this.state.currentPage}
         onClick={this.changePage}
-        onAnimationEnd={() => { this.setState({ status: "Card", }) }}
+        parentCallback={this.callbackFunction}
       />
     );
   }
@@ -76,13 +71,13 @@ class CardDeck extends React.Component {
   }
 
   changePage() {
-    var tmp = this.state.currentPage + 1;
-    // this.setState({ status: "Card Card-flip", });
-    if (tmp < data[this.props.deckID][this.state.currentCard].length) {
-      this.setState({ currentPage: tmp });
-    } else {
-      this.setState({ currentPage: 0 });
-    }
+    // var tmp = this.state.currentPage + 1;
+    this.setState({ status: "Card Card-flip", });
+    // if (tmp < data[this.props.deckID][this.state.currentCard].length) {
+    //   this.setState({ currentPage: tmp });
+    // } else {
+    //   this.setState({ currentPage: 0 });
+    // }
   }
 
   componentDidUpdate() {
@@ -94,6 +89,22 @@ class CardDeck extends React.Component {
       });
     }
   }
+
+  callbackFunction = childData => {
+    switch (childData) {
+      case "Card Card-flip":
+        this.setState({ status: "Card", });
+        if (this.state.currentPage + 1 < data[this.props.deckID][this.state.currentCard].length) {
+          this.setState({ currentPage: this.state.currentPage + 1 });
+        } else {
+          this.setState({ currentPage: 0 });
+        }
+        break;
+      default:
+        this.setState({ status: "Card", });
+        break;
+    }
+  };
 
   render() {
 
