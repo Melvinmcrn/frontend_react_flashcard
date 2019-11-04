@@ -34,14 +34,47 @@ class CardDeck extends React.Component {
       currentCard: 0,
       currentPage: 0,
       deckID: this.props.deckID,
+      data: [],
+      intervalIsSet: false,
     };
     this.nextCard = this.nextCard.bind(this);
     this.prevCard = this.prevCard.bind(this);
     this.changePage = this.changePage.bind(this);
   }
 
+  componentDidMount() {
+    this.getDataFromDb();
+    if (!this.state.intervalIsSet) {
+      let interval = setInterval(this.getDataFromDb, 1000);
+      this.setState({ intervalIsSet: interval });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.state.intervalIsSet) {
+      clearInterval(this.state.intervalIsSet);
+      this.setState({ intervalIsSet: null });
+    }
+  }
+
+  getDataFromDb = () => {
+    fetch('http://localhost:8080/CardDeck/' + this.state.deckID)
+      .then((res) => res.json())
+      .then((res) => {
+        // console.log(res);
+        this.setState({ data: res })
+      });
+  };
+
   getWordList(wordID) {
-    return this.props.deckID === null ? null : data[this.props.deckID][wordID];
+    // this.getDataFromDb();
+    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    console.log(wordID);
+    console.log(this.state.data);
+    console.log(this.state.data[wordID]);
+    // return null;
+    return this.props.deckID === null ? null : this.state.wordID === null ? null : this.state.data.length === 0 ? null : this.state.data[wordID];
+    // return data[this.state.deckID][wordID];
   }
 
   renderCard(wordID) {
