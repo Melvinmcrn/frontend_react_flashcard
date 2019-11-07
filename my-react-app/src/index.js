@@ -29,16 +29,18 @@ class MainPage extends React.Component {
           <LoginPage />
         </Route>
 
-        <Route path="/Category">
+        <Route path="/CardDeck" component={Category} />
+
+        {/* <Route path="/CardDeck" >
           <Category
             deckID={this.state.deckID}
-            parentCallback={this.callbackFunction}
+            // parentCallback={this.callbackFunction}
           />
-        </Route>
+        </Route> */}
 
-        <Route path="/CardDeck">
+        {/* <Route path="/CardDeck">
           <CardDeck />
-        </Route>
+        </Route> */}
 
       </Router>
 

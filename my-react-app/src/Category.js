@@ -1,8 +1,8 @@
 import React from "react";
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+import CardDeck from "./CardDeck";
 import "./Flashcard.css";
 import "./button.css";
-
-// var data = require("./data.json");
 
 class Deck extends React.Component {
   render() {
@@ -55,24 +55,41 @@ class Category extends React.Component {
       .then((res) => res.json())
       .then((res) => {
         // console.log(res);
-        this.setState({ data: res })});
+        if (this.state.data != res) {
+          this.setState({ data: res })
+        }
+      });
   };
 
   renderDeck(i) {
-    return <Deck key={i} deckID={i} onClick={() => this.sendData(i)} />;
+    return <Link to={this.props.match.url + i}><Deck key={i} deckID={i} /></Link>;
+    // return <Deck key={i} deckID={i} onClick="loca" />;
+    // return <Deck key={i} deckID={i} onClick={() => this.handleClickDeck(i)} />;
   }
 
-  sendData = i => {
+  handleClickDeck = i => {
     this.props.parentCallback(i);
   };
 
+
   render() {
-    // var data = 
     return (
-      <div className="Category">
-        {this.state.data.map(str => this.renderDeck(str))}
-        {/* {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))} */}
-      </div>
+      <switch>
+        <Route exact path={this.props.match.url + "/"}>
+          <div className="Category">
+            {this.state.data.map(str => this.renderDeck(str))}
+            {/* {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))} */}
+          </div>
+        </Route>
+
+        <Route path={"/CardDeck/:deckID"} component={CardDeck} />
+      </switch>
+
+      // <div className="Category">
+      //   {this.state.data.map(str => this.renderDeck(str))}
+      //   {/* {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))} */}
+      // </div>
+
     );
   }
 }

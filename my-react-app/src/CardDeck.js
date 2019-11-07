@@ -1,4 +1,6 @@
 import React from "react";
+import LightSpeed from 'react-reveal/LightSpeed';
+import { useParams } from "react-router-dom";
 import "./Flashcard.css";
 import "./button.css";
 var data = require("./data.json");
@@ -13,6 +15,11 @@ class Card extends React.Component {
     return this.props.wordList === null ? (
       <div></div>
     ) :
+      // <LightSpeed>
+      //   <div className={this.props.status} onClick={this.props.onClick} onTransitionEnd={() => this.sendData(this.props.status)}>
+      //     {this.props.wordList[this.props.currentPage]}
+      //   </div>
+      // </LightSpeed>
       this.props.status !== "Card" ?
         (
           <div className={this.props.status} onClick={this.props.onClick} onTransitionEnd={() => this.sendData(this.props.status)}>
@@ -29,14 +36,18 @@ class Card extends React.Component {
 class CardDeck extends React.Component {
   constructor(props) {
     super(props);
+    let pathArray = this.props.match.url.split("/")
+    let deck = pathArray[pathArray.length - 1];
     this.state = {
       status: "Card",
       currentCard: 0,
       currentPage: 0,
-      deckID: this.props.deckID,
+      deckID: deck,
+      // deckID: this.state.deckID,
       data: [],
       intervalIsSet: false,
     };
+    console.log(this.state);
     this.nextCard = this.nextCard.bind(this);
     this.prevCard = this.prevCard.bind(this);
     this.changePage = this.changePage.bind(this);
@@ -73,7 +84,7 @@ class CardDeck extends React.Component {
     console.log(this.state.data);
     console.log(this.state.data[wordID]);
     // return null;
-    return this.props.deckID === null ? null : this.state.wordID === null ? null : this.state.data.length === 0 ? null : this.state.data[wordID];
+    return this.state.deckID === null ? null : this.state.wordID === null ? null : this.state.data.length === 0 ? null : this.state.data[wordID];
     // return data[this.state.deckID][wordID];
   }
 
@@ -94,7 +105,7 @@ class CardDeck extends React.Component {
   }
 
   nextCardState() {
-    if (this.state.currentCard + 1 < data[this.props.deckID].length) {
+    if (this.state.currentCard + 1 < data[this.state.deckID].length) {
       this.setState({ currentCard: this.state.currentCard + 1, currentPage: 0 });
     } else {
       this.setState({ currentCard: 0, currentPage: 0 });
@@ -110,7 +121,7 @@ class CardDeck extends React.Component {
     if (this.state.currentCard - 1 >= 0) {
       this.setState({ currentCard: this.state.currentCard - 1, currentPage: 0 });
     } else {
-      this.setState({ currentCard: data[this.props.deckID].length - 1, currentPage: 0 });
+      this.setState({ currentCard: data[this.state.deckID].length - 1, currentPage: 0 });
     }
   }
 
@@ -119,7 +130,7 @@ class CardDeck extends React.Component {
   }
 
   changePageState() {
-    if (this.state.currentPage + 1 < data[this.props.deckID][this.state.currentCard].length) {
+    if (this.state.currentPage + 1 < data[this.state.deckID][this.state.currentCard].length) {
       this.setState({ currentPage: this.state.currentPage + 1 });
     } else {
       this.setState({ currentPage: 0 });
@@ -127,11 +138,11 @@ class CardDeck extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.deckID !== this.props.deckID) {
+    if (this.state.deckID !== this.state.deckID) {
       this.setState({
         currentCard: 0,
         currentPage: 0,
-        deckID: this.props.deckID,
+        deckID: this.state.deckID,
       });
     }
   }
@@ -183,5 +194,11 @@ class CardDeck extends React.Component {
     );
   }
 }
+
+// function getParams() {
+//   let { deckID } = useParams();
+//   console.log("DECK ID FROM PARAMS = " + deckID);
+//   return deckID;
+// }
 
 export default CardDeck;
