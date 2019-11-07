@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
-import "./index.css";
+// import "./index.css";
 import Category from "./Category";
 import CardDeck from "./CardDeck";
+import LoginPage from "./loginPage";
 import * as serviceWorker from "./serviceWorker";
 
 class MainPage extends React.Component {
@@ -20,13 +21,35 @@ class MainPage extends React.Component {
 
   render() {
     return (
-      <div className={"MainPage"}>
-        <Category
-          deckID={this.state.deckID}
-          parentCallback={this.callbackFunction}
-        />
-        <CardDeck deckID={this.state.deckID} />
-      </div>
+      <Router>
+        <Route path="/">
+        </Route>
+
+        <Route path="/Login">
+          <LoginPage />
+        </Route>
+
+        <Route path="/Category">
+          <Category
+            deckID={this.state.deckID}
+            parentCallback={this.callbackFunction}
+          />
+        </Route>
+
+        <Route path="/CardDeck">
+          <CardDeck />
+        </Route>
+
+      </Router>
+
+      // <LoginPage />
+      //   <div className={"MainPage"}>
+      //     <Category
+      //       deckID={this.state.deckID}
+      //       parentCallback={this.callbackFunction}
+      //     />
+      //     <CardDeck deckID={this.state.deckID} />
+      //   </div>
     );
   }
 }
