@@ -55,20 +55,21 @@ class Category extends React.Component {
       .then((res) => res.json())
       .then((res) => {
         // console.log(res);
-        if (this.state.data != res) {
+        if (this.state.data !== res) {
           this.setState({ data: res })
         }
       });
   };
 
   renderDeck(i) {
-    return <Link to={this.props.match.url + i}><Deck key={i} deckID={i} /></Link>;
-    // return <Deck key={i} deckID={i} onClick="loca" />;
+    // console.log(this.props.history);
+    return <Link to={"/CardDeck/" + i} key={"deck_"+i}><Deck  deckID={i} /></Link>;
+    // return <Deck key={"deck_"+i} deckID={i} onClick={this.handleClickDeck} />;
     // return <Deck key={i} deckID={i} onClick={() => this.handleClickDeck(i)} />;
   }
 
   handleClickDeck = i => {
-    this.props.parentCallback(i);
+    // this.props.parentCallback(i);
   };
 
 

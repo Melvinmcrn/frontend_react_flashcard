@@ -56,7 +56,7 @@ class CardDeck extends React.Component {
   componentDidMount() {
     this.getDataFromDb();
     if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 1000);
+      let interval = setInterval(this.getDataFromDb, 5000);
       this.setState({ intervalIsSet: interval });
     }
   }
@@ -72,20 +72,12 @@ class CardDeck extends React.Component {
     fetch('http://localhost:8080/CardDeck/' + this.state.deckID)
       .then((res) => res.json())
       .then((res) => {
-        // console.log(res);
         this.setState({ data: res })
       });
   };
 
   getWordList(wordID) {
-    // this.getDataFromDb();
-    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    console.log(wordID);
-    console.log(this.state.data);
-    console.log(this.state.data[wordID]);
-    // return null;
     return this.state.deckID === null ? null : this.state.wordID === null ? null : this.state.data.length === 0 ? null : this.state.data[wordID];
-    // return data[this.state.deckID][wordID];
   }
 
   renderCard(wordID) {
@@ -181,7 +173,7 @@ class CardDeck extends React.Component {
   render() {
 
     return (
-      <div>
+      <div className="Card-Deck-container">
         <div className="Card-Deck">
           {this.renderCard(this.state.currentCard)}
         </div>
@@ -195,10 +187,5 @@ class CardDeck extends React.Component {
   }
 }
 
-// function getParams() {
-//   let { deckID } = useParams();
-//   console.log("DECK ID FROM PARAMS = " + deckID);
-//   return deckID;
-// }
 
 export default CardDeck;

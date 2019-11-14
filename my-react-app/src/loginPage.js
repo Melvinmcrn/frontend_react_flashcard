@@ -53,15 +53,33 @@ class LoginBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
         };
+        this.submitLogin.bind(this);
     }
 
-    submitLogin(e) {
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
 
+    submitLogin = (e) => {
+        console.log(this.state);
+
+        // let loginData = this.state;
+        fetch('http://localhost:8080/register', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(this.state)
+        })
+            .then((result) => result.json())
+            .then((info) => { console.log(info); })
     }
 
     render() {
+
         return (
             <div className="inner-container">
                 <div className="header">
@@ -72,15 +90,15 @@ class LoginBox extends React.Component {
 
                     <div className="input-group">
                         <label htmlFor="username">Username</label>
-                        <input type="text" name="username" className="login-input" placeholder="Username" />
+                        <input type="text" name="username" className="login-input" placeholder="Username" onChange={this.handleChange.bind(this)} />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" className="login-input" placeholder="Password" />
+                        <input type="password" name="password" className="login-input" placeholder="Password" onChange={this.handleChange.bind(this)} />
                     </div>
 
-                    <button type="button" className="login-btn" onClick={this.submitLogin.bind(this)}>Login</button>
+                    <button type="button" className="login-btn" onClick={this.submitLogin}>Login</button>
                 </div>
             </div>
         );
