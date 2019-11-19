@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import CardDeck from "./CardDeck";
 import "./Flashcard.css";
 import "./button.css";
@@ -75,7 +75,7 @@ class Category extends React.Component {
 
   render() {
     return (
-      <switch>
+      <Switch>
         <Route exact path={this.props.match.url + "/"}>
           <div className="Category">
             {this.state.data.map(str => this.renderDeck(str))}
@@ -84,7 +84,7 @@ class Category extends React.Component {
         </Route>
 
         <Route path={"/CardDeck/:deckID"} component={CardDeck} />
-      </switch>
+      </Switch>
 
       // <div className="Category">
       //   {this.state.data.map(str => this.renderDeck(str))}

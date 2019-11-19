@@ -53,27 +53,33 @@ class LoginBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            credentials: { username: '', password: '' },
         };
         this.submitLogin.bind(this);
+        this.handleChange.bind(this);
     }
 
     handleChange = (e) => {
+        let tempCredentials = this.state.credentials;
+        tempCredentials[e.target.name] = e.target.value;
         this.setState({
-            [e.target.name]: e.target.value
+            credentials: tempCredentials
         })
     }
 
     submitLogin = (e) => {
-        console.log(this.state);
+        // console.log(this.state);
 
         // let loginData = this.state;
-        fetch('http://localhost:8080/register', {
+        fetch('http://localhost:8080/login', {
             method: "POST",
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
             },
-            body: JSON.stringify(this.state)
+            body: JSON.stringify(this.state.credentials)
         })
+            // .then((result) => { console.log(result); })
             .then((result) => result.json())
             .then((info) => { console.log(info); })
     }
@@ -111,8 +117,16 @@ class RegisterBox extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            credentials: { email: '', username: '', password: '' },
         };
+    }
+
+    handleChange = (e) => {
+        let tempCredentials = this.state.credentials;
+        tempCredentials[e.target.name] = e.target.value;
+        this.setState({
+            credentials: tempCredentials
+        })
     }
 
     submitRegister(e) {
@@ -130,20 +144,20 @@ class RegisterBox extends React.Component {
 
                     <div className="input-group">
                         <label htmlFor="email">Email</label>
-                        <input type="email" name="email" className="login-input" placeholder="Email" />
+                        <input type="email" name="email" className="login-input" placeholder="Email" onChange={this.handleChange.bind(this)} />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="username">Username</label>
-                        <input type="text" name="username" className="login-input" placeholder="Username" />
+                        <input type="text" name="username" className="login-input" placeholder="Username" onChange={this.handleChange.bind(this)} />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" className="login-input" placeholder="Password" />
+                        <input type="password" name="password" className="login-input" placeholder="Password" onChange={this.handleChange.bind(this)} />
                     </div>
 
-                    <button type="button" className="login-btn" onClick={this.submitRegister.bind(this)}>Register</button>
+                    <button type="button" className="login-btn" onClick={this.submitRegister}>Register</button>
                 </div>
             </div>
         );
