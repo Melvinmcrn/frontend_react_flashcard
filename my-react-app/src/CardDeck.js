@@ -1,6 +1,6 @@
 import React from "react";
-import LightSpeed from 'react-reveal/LightSpeed';
-import { useParams } from "react-router-dom";
+// import LightSpeed from 'react-reveal/LightSpeed';
+// import { useParams } from "react-router-dom";
 import "./Flashcard.css";
 import "./button.css";
 var data = require("./data.json");

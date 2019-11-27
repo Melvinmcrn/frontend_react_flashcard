@@ -1,5 +1,6 @@
 import React from "react";
 import "./login.scss";
+import axios from "axios";
 
 class LoginPage extends React.Component {
 
@@ -54,6 +55,7 @@ class LoginBox extends React.Component {
         super(props);
         this.state = {
             credentials: { username: '', password: '' },
+            errorMessage: '',
         };
         this.submitLogin.bind(this);
         this.handleChange.bind(this);
@@ -68,20 +70,40 @@ class LoginBox extends React.Component {
     }
 
     submitLogin = (e) => {
-        // console.log(this.state);
+        axios.defaults.withCredentials = true;
 
-        // let loginData = this.state;
-        fetch('http://localhost:8080/login', {
-            method: "POST",
-            headers: {
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(this.state.credentials)
+        axios.post('http://localhost:8080/login', {
+            credentials: this.state.credentials,
         })
-            // .then((result) => { console.log(result); })
-            .then((result) => result.json())
-            .then((info) => { console.log(info); })
+            .then((response) => {
+                console.log("LOGIN SUCCESS");
+                this.setState({ errorMessage: '' });
+                // [TODO] REDIRECT BECAUSE LOGIN SUCCESS
+            })
+            .catch((error) => {
+                console.error(error.response.data);
+                switch (error.response.status) {
+                    case 700:
+                        // username or password missing
+                        this.setState({ errorMessage: "PLEASE INPUT USERNAME AND PASSWORD" });
+                        break;
+                    case 701:
+                        // username not found in db
+                        this.setState({ errorMessage: "USERNAME NOT FOUND" });
+                        break;
+                    case 702:
+                        // wrong password
+                        this.setState({ errorMessage: "WRONG PASSWORD" });
+                        break;
+                    default:
+                        // some error
+                        this.setState({ errorMessage: "ERROR! PLEASE TRY AGAIN LATER" });
+                        break;
+                }
+            })
+            .then(() => {
+                // console.log("Login done.");
+            });
     }
 
     render() {
@@ -104,6 +126,8 @@ class LoginBox extends React.Component {
                         <input type="password" name="password" className="login-input" placeholder="Password" onChange={this.handleChange.bind(this)} />
                     </div>
 
+                    <div className="error-message">{this.state.errorMessage}</div>
+
                     <button type="button" className="login-btn" onClick={this.submitLogin}>Login</button>
                 </div>
             </div>
@@ -118,7 +142,10 @@ class RegisterBox extends React.Component {
         super(props);
         this.state = {
             credentials: { email: '', username: '', password: '' },
+            errorMessage: '',
         };
+        this.submitRegister.bind(this);
+        this.handleChange.bind(this);
     }
 
     handleChange = (e) => {
@@ -129,8 +156,37 @@ class RegisterBox extends React.Component {
         })
     }
 
-    submitRegister(e) {
+    submitRegister = (e) => {
+        axios.defaults.withCredentials = true;
 
+        axios.post('http://localhost:8080/register', {
+            credentials: this.state.credentials,
+        })
+            .then((response) => {
+                console.log("REGISTER SUCCESS");
+                this.setState({ errorMessage: '' });
+                // [TODO] REDIRECT BECAUSE REGISTER SUCCESS
+            })
+            .catch((error) => {
+                console.error(error.response.data);
+                switch (error.response.status) {
+                    case 705:
+                        // username or password missing
+                        this.setState({ errorMessage: "THIS USERNAME IS ALREADY EXISTED" });
+                        break;
+                    case 706:
+                        // username not found in db
+                        this.setState({ errorMessage: error.response.data });
+                        break;
+                    default:
+                        // some error
+                        this.setState({ errorMessage: "ERROR! PLEASE TRY AGAIN LATER" });
+                        break;
+                }
+            })
+            .then(() => {
+                // console.log("Register done.");
+            });
     }
 
     render() {
@@ -156,6 +212,8 @@ class RegisterBox extends React.Component {
                         <label htmlFor="password">Password</label>
                         <input type="password" name="password" className="login-input" placeholder="Password" onChange={this.handleChange.bind(this)} />
                     </div>
+
+                    <div className="error-message">{this.state.errorMessage}</div>
 
                     <button type="button" className="login-btn" onClick={this.submitRegister}>Register</button>
                 </div>
