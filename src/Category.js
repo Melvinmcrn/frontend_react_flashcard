@@ -3,6 +3,7 @@ import { Route, Link, Switch } from 'react-router-dom';
 import CardDeck from "./CardDeck";
 import "./Flashcard.css";
 import "./button.css";
+import axios from "axios";
 
 class Deck extends React.Component {
   render() {
@@ -22,6 +23,7 @@ class Category extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      didMount: false,
       deckID: "",
       data: [],
       intervalIsSet: false,
@@ -51,21 +53,39 @@ class Category extends React.Component {
   // our first get method that uses our backend api to
   // fetch data from our data base
   getDataFromDb = () => {
-    fetch('http://localhost:8080/CardDeck')
-      .then((res) => res.json())
+    axios.defaults.withCredentials = true;
+
+    axios.get('http://localhost:8080/CardDeck/', {
+      // credentials: this.state.credentials,
+    })
       .then((res) => {
-        // console.log(res);
-        if (this.state.data !== res) {
-          this.setState({ data: res })
+        if (this.state.data !== res.data) {
+          this.setState({ data: res.data, didMount: true })
+        }
+      })
+      .catch((error) => {
+
+        console.error(error);
+
+        // UNAUTHORIZED
+        if (error.response.status === 401) {
+          alert("YOU MUST LOGIN FIRST!");
+          window.location.replace('http://localhost:3000/login');
         }
       });
+
+    // fetch('http://localhost:8080/CardDeck')
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     // console.log(res);
+    //     if (this.state.data !== res) {
+    //       this.setState({ data: res })
+    //     }
+    //   });
   };
 
   renderDeck(i) {
-    // console.log(this.props.history);
-    return <Link to={"/CardDeck/" + i} key={"deck_"+i}><Deck  deckID={i} /></Link>;
-    // return <Deck key={"deck_"+i} deckID={i} onClick={this.handleClickDeck} />;
-    // return <Deck key={i} deckID={i} onClick={() => this.handleClickDeck(i)} />;
+    return <Link to={"/CardDeck/" + i} key={"deck_" + i}><Deck deckID={i} /></Link>;
   }
 
   handleClickDeck = i => {
@@ -74,24 +94,29 @@ class Category extends React.Component {
 
 
   render() {
-    return (
-      <Switch>
-        <Route exact path={this.props.match.url + "/"}>
-          <div className="Category">
-            {this.state.data.map(str => this.renderDeck(str))}
-            {/* {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))} */}
-          </div>
-        </Route>
 
-        <Route path={"/CardDeck/:deckID"} component={CardDeck} />
-      </Switch>
+    if (!this.state.didMount) {
+      return (<div></div>);
+    } else {
+      return (
+        <Switch>
+          <Route exact path={this.props.match.url + "/"}>
+            <div className="Category">
+              {this.state.data.map(str => this.renderDeck(str))}
+              {/* {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))} */}
+            </div>
+          </Route>
 
-      // <div className="Category">
-      //   {this.state.data.map(str => this.renderDeck(str))}
-      //   {/* {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))} */}
-      // </div>
+          <Route path={"/CardDeck/:deckID"} component={CardDeck} />
+        </Switch>
 
-    );
+        // <div className="Category">
+        //   {this.state.data.map(str => this.renderDeck(str))}
+        //   {/* {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))} */}
+        // </div>
+
+      );
+    }
   }
 }
 

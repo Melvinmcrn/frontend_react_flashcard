@@ -76,9 +76,14 @@ class LoginBox extends React.Component {
             credentials: this.state.credentials,
         })
             .then((response) => {
-                console.log("LOGIN SUCCESS");
-                this.setState({ errorMessage: '' });
-                // [TODO] REDIRECT BECAUSE LOGIN SUCCESS
+                if (response.status === 200) {
+                    console.log("LOGIN SUCCESS");
+                    this.setState({ errorMessage: '' });
+                    // REDIRECT BECAUSE LOGIN SUCCESS
+                    window.location.replace("http://localhost:3000/CardDeck");
+                } else {
+                    console.log(response);
+                }
             })
             .catch((error) => {
                 console.error(error.response.data);
@@ -163,11 +168,17 @@ class RegisterBox extends React.Component {
             credentials: this.state.credentials,
         })
             .then((response) => {
-                console.log("REGISTER SUCCESS");
-                this.setState({ errorMessage: '' });
-                // [TODO] REDIRECT BECAUSE REGISTER SUCCESS
+                if (response.status === 200) {
+                    console.log("REGISTER SUCCESS");
+                    this.setState({ errorMessage: '' });
+                    // REDIRECT BECAUSE REGISTER SUCCESS
+                    window.location.replace("http://localhost:3000/login");
+                } else {
+                    console.log(response);
+                }
             })
             .catch((error) => {
+                if (!error.response) return;
                 console.error(error.response.data);
                 switch (error.response.status) {
                     case 705:
@@ -199,13 +210,13 @@ class RegisterBox extends React.Component {
                 <div className="box">
 
                     <div className="input-group">
-                        <label htmlFor="email">Email</label>
-                        <input type="email" name="email" className="login-input" placeholder="Email" onChange={this.handleChange.bind(this)} />
+                        <label htmlFor="username">Username</label>
+                        <input type="text" name="username" className="login-input" placeholder="Username" onChange={this.handleChange.bind(this)} />
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="username">Username</label>
-                        <input type="text" name="username" className="login-input" placeholder="Username" onChange={this.handleChange.bind(this)} />
+                        <label htmlFor="email">Email</label>
+                        <input type="email" name="email" className="login-input" placeholder="Email" onChange={this.handleChange.bind(this)} />
                     </div>
 
                     <div className="input-group">

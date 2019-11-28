@@ -3,6 +3,7 @@ import React from "react";
 // import { useParams } from "react-router-dom";
 import "./Flashcard.css";
 import "./button.css";
+import axios from "axios";
 var data = require("./data.json");
 
 class Card extends React.Component {
@@ -69,11 +70,30 @@ class CardDeck extends React.Component {
   }
 
   getDataFromDb = () => {
-    fetch('http://localhost:8080/CardDeck/' + this.state.deckID)
-      .then((res) => res.json())
-      .then((res) => {
-        this.setState({ data: res })
+    axios.defaults.withCredentials = true;
+
+    axios.get('http://localhost:8080/CardDeck/' + this.state.deckID, {
+      // credentials: this.state.credentials,
+    }).then((res) => {
+      if (this.state.data !== res.data) {
+        this.setState({ data: res.data })
+      }
+    })
+      .catch((error) => {
+        console.error(error);
+
+        // UNAUTHORIZED
+        if (error.response.status === 401) {
+          alert("YOU MUST LOGIN FIRST!");
+          window.location.replace('http://localhost:3000/login');
+        }
       });
+
+    // fetch('http://localhost:8080/CardDeck/' + this.state.deckID)
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     this.setState({ data: res })
+    //   });
   };
 
   getWordList(wordID) {
