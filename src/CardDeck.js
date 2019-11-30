@@ -4,6 +4,8 @@ import React from "react";
 import "./Flashcard.css";
 import "./button.css";
 import axios from "axios";
+import Fade from 'react-reveal/Fade';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 var data = require("./data.json");
 
 class Card extends React.Component {
@@ -16,11 +18,6 @@ class Card extends React.Component {
     return this.props.wordList === null ? (
       <div></div>
     ) :
-      // <LightSpeed>
-      //   <div className={this.props.status} onClick={this.props.onClick} onTransitionEnd={() => this.sendData(this.props.status)}>
-      //     {this.props.wordList[this.props.currentPage]}
-      //   </div>
-      // </LightSpeed>
       this.props.status !== "Card" ?
         (
           <div className={this.props.status} onClick={this.props.onClick} onTransitionEnd={() => this.sendData(this.props.status)}>
@@ -48,7 +45,7 @@ class CardDeck extends React.Component {
       data: [],
       intervalIsSet: false,
     };
-    console.log(this.state);
+    // console.log(this.state);
     this.nextCard = this.nextCard.bind(this);
     this.prevCard = this.prevCard.bind(this);
     this.changePage = this.changePage.bind(this);
@@ -89,11 +86,6 @@ class CardDeck extends React.Component {
         }
       });
 
-    // fetch('http://localhost:8080/CardDeck/' + this.state.deckID)
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     this.setState({ data: res })
-    //   });
   };
 
   getWordList(wordID) {
@@ -202,7 +194,118 @@ class CardDeck extends React.Component {
           <button className={"btn btn-change"} onClick={this.prevCard}>Back</button>
           <button className={"btn btn-change"} onClick={this.nextCard}>Next</button>
         </div>
+
+        {/* <TodoExample /> */}
       </div>
+
+
+
+
+    );
+  }
+}
+
+
+class TodoExample extends React.Component {
+  constructor(props) {
+    super(props);
+    this.groupProps = {
+      appear: false,
+      enter: true,
+      exit: true,
+    };
+    this.state = {
+      todo: '',
+      todos: [
+      ].map((text, id) => ({ id, text })),
+    };
+    this.state.id = this.state.todos.length;
+    this.handleChange = this.handleChange.bind(this);
+    this.add = this.add.bind(this);
+    this.remove = this.remove.bind(this);
+  }
+  add(event) {
+    event.preventDefault();
+    this.setState({
+      id: this.state.id + 1,
+      todos: [
+        ...this.state.todos,
+        { id: this.state.id, text: this.state.todo || '-' }
+      ],
+      todo: '',
+    });
+  }
+  remove(event) {
+    this.setState({
+      todos: this.state.todos.filter(item =>
+        item.id !== +event.currentTarget.getAttribute('data-id')
+      )
+    });
+
+  }
+  handleChange({ target: { name, value } }) {
+    this.setState({ [name]: value });
+  }
+  render() {
+    return (
+      <form onSubmit={this.add} autoComplete="off">
+        <div className="col-12 mb-2">
+          <TransitionGroup {...this.groupProps}>
+            {this.state.todos.map((item) =>
+              // The next line is what controls
+              // animated transitions
+              <Fade key={item.id} collapse bottom>
+                <div className="card">
+                  <div className="card-body justify-content-between">
+                    {item.text}
+                    <button
+                      data-id={item.id}
+                      onClick={this.remove}
+                      type="button"
+                      className="close"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                </div>
+              </Fade>
+            )}
+          </TransitionGroup>
+        </div>
+        <div className="col-10">
+          <div className="input-group mt-4 mb-1">
+            <input
+              type="text"
+              className="form-control"
+              id='todoField'
+              placeholder='Input Word'
+              name='todo'
+              value={this.state.todo}
+              onChange={this.handleChange}
+            />
+            <div className="input-group-append">
+              <button
+                onClick={this.add}
+                className="btn btn-outline-primary"
+                type="button"
+              >
+                Add Word
+            </button>
+            <button
+                onClick={this.add}
+                className="btn btn-outline-success"
+                type="button"
+              >
+                Save Word
+            </button>
+            </div>
+          </div>
+          <small id="emailHelp" className="form-text text-muted">
+            Language Count: {this.state.todos.length}
+          </small>
+        </div>
+      </form>
     );
   }
 }

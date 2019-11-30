@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 // import "./index.css";
 import Category from "./Category";
 import CardDeck from "./CardDeck";
 import LoginPage from "./loginPage";
+import NavigationBar from "./NavBar";
 import * as serviceWorker from "./serviceWorker";
 
 class MainPage extends React.Component {
@@ -21,37 +22,33 @@ class MainPage extends React.Component {
 
   render() {
     return (
-      <Router>
-        <Route path="/">
-        </Route>
+      <div>
+        <Router>
+          <Switch>
+            <Route exact path="/login">
 
-        <Route path="/Login">
-          <LoginPage />
-        </Route>
+            </Route>
 
-        <Route path="/CardDeck" component={Category} />
+            <Route path="/" component={NavigationBar}>
+            </Route>
+          </Switch>
+        </Router>
 
-        {/* <Route path="/CardDeck" >
-          <Category
-            deckID={this.state.deckID}
-            // parentCallback={this.callbackFunction}
-          />
-        </Route> */}
+        <Router>
+          <Route path="/">
 
-        {/* <Route path="/CardDeck">
-          <CardDeck />
-        </Route> */}
+          </Route>
 
-      </Router>
+          <Route exact path="/Login">
+            <LoginPage />
+          </Route>
 
-      // <LoginPage />
-      //   <div className={"MainPage"}>
-      //     <Category
-      //       deckID={this.state.deckID}
-      //       parentCallback={this.callbackFunction}
-      //     />
-      //     <CardDeck deckID={this.state.deckID} />
-      //   </div>
+          <Route path="/CardDeck" component={Category} />
+
+        </Router>
+
+      </div>
+
     );
   }
 }

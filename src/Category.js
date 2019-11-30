@@ -73,15 +73,6 @@ class Category extends React.Component {
           window.location.replace('http://localhost:3000/login');
         }
       });
-
-    // fetch('http://localhost:8080/CardDeck')
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     // console.log(res);
-    //     if (this.state.data !== res) {
-    //       this.setState({ data: res })
-    //     }
-    //   });
   };
 
   renderDeck(i) {
@@ -103,17 +94,11 @@ class Category extends React.Component {
           <Route exact path={this.props.match.url + "/"}>
             <div className="Category">
               {this.state.data.map(str => this.renderDeck(str))}
-              {/* {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))} */}
             </div>
           </Route>
 
           <Route path={"/CardDeck/:deckID"} component={CardDeck} />
         </Switch>
-
-        // <div className="Category">
-        //   {this.state.data.map(str => this.renderDeck(str))}
-        //   {/* {["Animal", "Fruit", "Color"].map(str => this.renderDeck(str))} */}
-        // </div>
 
       );
     }
